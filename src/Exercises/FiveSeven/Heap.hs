@@ -1,14 +1,21 @@
-module Exercises.FiveOne.Heap (
+module Exercises.FiveSeven.Heap (
   Heap,
   emptyHeap,
   heapEmpty,
   findHeap,
   deleteHeap,
   insertHeap,
-  mergeHeap
+  mergeHeap,
+  fromList
 ) where
 
 data Heap a = EmptyHp | Hp a Int (Heap a) (Heap a) deriving (Show)
+
+fromList :: (Ord a) => [a] -> Heap a
+fromList (x:[]) = Hp x 1 EmptyHp EmptyHp
+fromList xs = mergeHeap (fromList (take center xs)) (fromList (drop center xs))
+  where
+    center = div (length xs) 2
 
 emptyHeap :: (Ord a) => Heap a
 emptyHeap = EmptyHp
