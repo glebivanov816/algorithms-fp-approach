@@ -14,12 +14,10 @@ newMatrix :: Int -> Int -> Matrix
 newMatrix rows cols = Mtx $ Table.newTable [((i, j), i * j) | i <- [1 .. rows], j <- [1 .. cols]]
 
 matrixProduct :: Matrix -> Matrix -> Matrix
-matrixProduct (Mtx xs) (Mtx ys) = Mtx $ Table.newTable [((i, j), (valueOf i j)) | i <- [minRow .. maxRow], j <- [minCol .. maxCol]]
+matrixProduct (Mtx xs) (Mtx ys) = Mtx $ Table.newTable [((i, j), (valueOf i j)) | i <- rows, j <- cols]
   where
-    minRow = Table.minRow xs
-    maxRow = Table.maxRow xs
-    minCol = Table.minCol ys
-    maxCol = Table.maxCol ys
+    rows = [(Table.minRow xs) .. (Table.maxRow xs)]
+    cols = [(Table.minCol ys) .. (Table.maxCol ys)]
     valueOf row col = scalarProduct (Table.getRow xs row) (Table.getColumn ys col)
 
 scalarProduct :: Vector -> Vector -> Int
