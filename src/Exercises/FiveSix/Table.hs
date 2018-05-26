@@ -2,24 +2,46 @@ module Exercises.FiveSix.Table(
   Table,
   newTable,
   findTable,
-  updTable
+  updTable,
+  maxCol,
+  maxRow,
+  minCol,
+  minRow,
+  getRow,
+  getColumn
 ) where
 
 import Data.Array
 
-newtype Table b v = Tbl (Array (b, b) [((b, b), v)]) deriving (Show)
+newtype Table v = Tbl (Array (Int, Int) v) deriving (Show)
 
-newTable :: [((b, b), v)] -> Table b v
-newTable pairs = Tbl $ array (lo, hi) pairs
+newTable :: [((Int, Int), v)] -> Table v
+newTable assocs = Tbl $ array (lo, hi) assocs
   where
-    indices = map fst pairs
+    indices = map fst assocs
     lo = minimum indices
     hi = maximum indices
 
-findTable :: (Table b v) -> (b, b) -> v
-findTable (Tbl array) key
-  | elem key array = array ! key
-  | otherwise = error "Value doesn't exist in table"
+findTable :: Table v -> (Int, Int) -> v
+findTable (Tbl array) key = array ! key
 
-updTable :: ((b, b), v) -> Table b v -> Table b v
-updTable pair (Tbl array) = Tbl $ array // [pair]
+updTable :: ((Int, Int), v) -> Table v -> Table v
+updTable assoc (Tbl array) = Tbl $ array // [assoc]
+
+getRow :: Table v -> Int -> [v]
+getRow table@(Tbl array) i = elems $ ixmap (minCol table, maxCol table) (\j -> (i, j)) array
+
+getColumn :: Table v -> Int -> [v]
+getColumn table@(Tbl array) j = elems $ ixmap (minRow table, maxRow table) (\i -> (i, j)) array
+
+maxCol :: Table v -> Int
+maxCol (Tbl array) = snd.snd $ bounds array
+
+minCol :: Table v -> Int
+minCol (Tbl array) = snd.fst $ bounds array
+
+maxRow :: Table v -> Int
+maxRow (Tbl array) = fst.snd $ bounds array
+
+minRow :: Table v -> Int
+minRow (Tbl array) = fst.fst $ bounds array
