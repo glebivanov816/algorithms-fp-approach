@@ -1,6 +1,6 @@
 module Exercises.FiveNine.Main (main) where
 
-import qualified Exercises.FiveNine.AVLTree as Tree
+import qualified Exercises.FiveNine.AVLTree as AVLTree
 
 main :: IO ()
-main = putStrLn.show $ "FiveNine"
+main = putStrLn.show $ AVLTree.delete 10 $ foldr AVLTree.insert AVLTree.emptyAVL [1 .. 32]
