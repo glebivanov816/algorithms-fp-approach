@@ -17,7 +17,9 @@ module Lib (runExercise) where
 -- import Exercises.Six.Seven.Main (main)
 -- import Exercises.Six.Eight.Main (main)
 -- import Exercises.Six.Nine.Main (main)
-import Exercises.Six.Ten.Main (main)
+-- import Exercises.Six.Ten.Main (main)
+-- import Exercises.Six.Eleven.Main (main)
+import Exercises.Six.Twelve.Main (main)
 
 runExercise :: IO ()
 runExercise = main
