@@ -27,8 +27,7 @@ concatBuckets :: (Ord a) => Buckets a -> [Value a]
 concatBuckets = concat.elems
 
 makeBuckets :: (Ord a, Ix a) => (a, a) -> Int -> [Value a] -> Buckets a
-makeBuckets sortRange radix values = accumArray accumFn [] sortRange assocs
+makeBuckets sortRange radix values = accumArray (flip (:)) [] sortRange assocs
   where
-    accumFn values value = value:values
     assocs = map makeAssoc values
     makeAssoc value = (value !! radix, value)
